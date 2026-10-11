@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="vi" data-mantine-color-scheme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <title>ClientJS Playground</title>
+    <meta name="description" content="Chạy JavaScript ngay trên trình duyệt: QuickJS (WASM), Web Worker, Node.js (WebContainer)." />
+    <script>
+      // Host static không đặt được header COOP/COEP (vd. GitHub Pages) => dùng service worker
+      // chèn header để trang thành cross-origin isolated (WebContainer cần điều này).
+      (function () {
+        if (window.crossOriginIsolated || !window.isSecureContext || !('serviceWorker' in navigator)) return;
+        var KEY = 'clientjs:coi-reloaded';
+        navigator.serviceWorker.register('./coi-sw.js').then(function () {
+          // Đã có SW điều khiển mà vẫn chưa isolated => trình duyệt không hỗ trợ, đừng reload vòng lặp.
+          if (navigator.serviceWorker.controller) return;
+          navigator.serviceWorker.ready.then(function () {
+            try {
+              if (sessionStorage.getItem(KEY)) return;
+              sessionStorage.setItem(KEY, '1');
+            } catch (e) {}
+            location.reload();
+          });
+        });
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

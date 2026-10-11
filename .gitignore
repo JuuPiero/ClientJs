@@ -1,0 +1,6 @@
+node_modules
+dist
+# Sinh ra bởi scripts/build-wasm.mjs từ wasm/libs
+public/wasm
+*.log
+.DS_Store

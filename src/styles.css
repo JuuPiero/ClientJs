@@ -1,0 +1,197 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  overflow: hidden;
+  background: var(--mantine-color-body);
+}
+
+.brand span {
+  color: var(--mantine-color-indigo-4);
+}
+
+.dim {
+  opacity: 0.5;
+}
+
+.project-title {
+  padding: 4px 8px;
+  border-radius: var(--mantine-radius-sm);
+  min-width: 0;
+}
+.project-title:hover {
+  background: var(--mantine-color-dark-6);
+}
+
+/* ---- Layout ------------------------------------------------------------- */
+
+.main {
+  height: 100dvh;
+  display: flex;
+}
+
+.fill {
+  flex: 1;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  background: var(--mantine-color-dark-8);
+}
+
+.sidebar-files {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-top: 1px solid var(--mantine-color-dark-5);
+  margin-top: 6px;
+}
+
+.statusbar {
+  background: var(--mantine-color-indigo-9);
+  color: var(--mantine-color-indigo-0);
+}
+
+.resize-handle {
+  background: var(--mantine-color-dark-5);
+  flex: 0 0 4px;
+  transition: background 120ms;
+}
+.resize-handle:hover,
+.resize-handle[data-separator='active'],
+.resize-handle[data-separator='hover'] {
+  background: var(--mantine-color-indigo-6);
+}
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: #1a1b1e;
+}
+
+.pane-toolbar {
+  height: 32px;
+  flex: 0 0 32px;
+  padding: 0 8px;
+  border-bottom: 1px solid var(--mantine-color-dark-5);
+  background: var(--mantine-color-dark-7);
+}
+
+/* ---- Danh sách dự án / cây file ------------------------------------------ */
+
+.list-row {
+  border-radius: var(--mantine-radius-sm);
+  padding-right: 4px;
+}
+.list-row:hover {
+  background: var(--mantine-color-dark-6);
+}
+.list-row[data-active] {
+  background: var(--mantine-color-indigo-light);
+}
+.list-row-main {
+  flex: 1;
+  min-width: 0;
+  padding: 5px 6px;
+}
+
+.row-action {
+  opacity: 0;
+}
+.list-row:hover .row-action,
+.tree-row:hover .row-action,
+.row-action[data-expanded] {
+  opacity: 1;
+}
+@media (hover: none) {
+  .row-action {
+    opacity: 1;
+  }
+}
+
+.tree-row {
+  padding: 3px 4px;
+  border-radius: var(--mantine-radius-sm);
+  cursor: pointer;
+  user-select: none;
+}
+.tree-row:hover {
+  background: var(--mantine-color-dark-6);
+}
+.tree-row[data-active] {
+  background: var(--mantine-color-indigo-light);
+}
+.tree-row[data-selected] {
+  outline: none;
+}
+
+.chevron {
+  flex-shrink: 0;
+  transition: transform 120ms;
+}
+.chevron[data-expanded] {
+  transform: rotate(90deg);
+}
+
+/* ---- Editor --------------------------------------------------------------- */
+
+.editor-pane {
+  background: #1e1e1e;
+}
+
+.tabbar {
+  flex: 0 0 auto;
+  background: var(--mantine-color-dark-7);
+  border-bottom: 1px solid var(--mantine-color-dark-5);
+}
+
+.tab {
+  height: 34px;
+  padding: 0 6px 0 12px;
+  border-right: 1px solid var(--mantine-color-dark-5);
+  color: var(--mantine-color-dimmed);
+  border-top: 2px solid transparent;
+}
+.tab[data-active] {
+  background: #1e1e1e;
+  color: var(--mantine-color-text);
+  border-top-color: var(--mantine-color-indigo-5);
+}
+.tab-label {
+  white-space: nowrap;
+}
+
+.editor-host {
+  flex: 1;
+  min-height: 0;
+}
+
+/* ---- Terminal / preview ----------------------------------------------------- */
+
+.xterm-host {
+  flex: 1;
+  min-height: 0;
+  padding: 6px 0 0 8px;
+}
+
+.preview-frame {
+  flex: 1;
+  border: 0;
+  width: 100%;
+  background: #fff;
+}
+
+/* ---- Dialog ----------------------------------------------------------------- */
+
+.runtime-card[data-checked] {
+  border-color: var(--mantine-primary-color-filled);
+}

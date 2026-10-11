@@ -1,0 +1,4 @@
+# Netlify / Cloudflare Pages: bật cross-origin isolation cho WebContainer
+/*
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: require-corp

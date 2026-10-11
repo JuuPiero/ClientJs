@@ -1,4 +1,15 @@
-import { ActionIcon, Group, Menu, ScrollArea, Text, Tooltip, Tree, useTree, type TreeNodeData } from '@mantine/core';
+import {
+  ActionIcon,
+  getTreeExpandedState,
+  Group,
+  Menu,
+  ScrollArea,
+  Text,
+  Tooltip,
+  Tree,
+  useTree,
+  type TreeNodeData,
+} from '@mantine/core';
 import {
   IconBraces,
   IconBrandJavascript,
@@ -13,7 +24,7 @@ import {
   IconPlayerPlay,
   IconTrash,
 } from '@tabler/icons-react';
-import { useEffect, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { createFile, deletePath, movePath, renamePath } from '../lib/actions';
 import { useCurrentProject, useAppStore } from '../store/appStore';
 
@@ -64,16 +75,20 @@ export function FileTree() {
   const project = useCurrentProject();
   const openFile = useAppStore((s) => s.openFile);
   const setEntry = useAppStore((s) => s.setEntry);
-  const tree = useTree();
-
   const pathsKey = project ? Object.keys(project.files).sort().join('\n') : '';
   const data = useMemo(() => buildTree(pathsKey ? pathsKey.split('\n') : []), [pathsKey]);
-  const foldersKey = pathsKey.split('\n').map(dirOf).filter(Boolean).join('|');
 
-  // Mở sẵn mọi thư mục khi đổi dự án / có thư mục mới.
-  useEffect(() => {
-    tree.expandAllNodes();
-  }, [project?.id, foldersKey]);
+  // Thư mục mặc định mở (kể cả thư mục mới tạo); chỉ nhớ những thư mục người dùng đã thu gọn.
+  const [collapsed, setCollapsed] = useState<string[]>([]);
+  const expandedState = useMemo(() => {
+    const state = getTreeExpandedState(data, '*');
+    for (const value of collapsed) state[value] = false;
+    return state;
+  }, [data, collapsed]);
+  const tree = useTree({
+    expandedState,
+    onExpandedStateChange: (s) => setCollapsed(Object.keys(s).filter((k) => !s[k])),
+  });
 
   if (!project) return null;
 

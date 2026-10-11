@@ -1,0 +1,2 @@
+# Netlify / Cloudflare Pages: mở preview WebContainer ở tab mới
+/webcontainer/connect/*  /connect.html  200

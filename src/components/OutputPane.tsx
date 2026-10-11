@@ -46,8 +46,8 @@ function Preview({ url, port }: { url: string; port?: number }) {
             <IconRefresh size={14} />
           </ActionIcon>
         </Tooltip>
-        <Tooltip label="Mở tab mới">
-          <ActionIcon component="a" href={url} target="_blank" rel="noreferrer" variant="subtle" color="gray" size="sm">
+        <Tooltip label="Mở tab mới (bấm “Connect to Project” ở tab đó)">
+          <ActionIcon component="a" href={url} target="_blank" rel="noopener" variant="subtle" color="gray" size="sm">
             <IconExternalLink size={14} />
           </ActionIcon>
         </Tooltip>

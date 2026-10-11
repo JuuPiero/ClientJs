@@ -1,7 +1,8 @@
 {
+  "rewrites": [{ "source": "/webcontainer/connect/:token*", "destination": "/connect.html" }],
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "/((?!webcontainer/connect/|connect\\.html).*)",
       "headers": [
         { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" },
         { "key": "Cross-Origin-Embedder-Policy", "value": "require-corp" }

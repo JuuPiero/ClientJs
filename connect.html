@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Trang này luôn được phục vụ tại /webcontainer/connect/<token> (gốc domain) -->
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đang kết nối preview…</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #1a1b1e;
+        color: #c1c2c5;
+        font: 14px system-ui, sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <p id="status">Đang kết nối preview với WebContainer…</p>
+    <script type="module" src="/src/connect.ts"></script>
+  </body>
+</html>

@@ -37,6 +37,7 @@ src/
   store/projects.ts          Hàm thuần: tạo/chuẩn hoá dự án, export/import, đổi tên path
   templates.ts               Template + dự án mẫu tạo sẵn lần đầu
   runner.ts                  Điều phối Run/Stop/Shell ↔ runtime ↔ terminal
+  connect.ts                 Trang /webcontainer/connect/* (mở preview ở tab mới), entry của connect.html
   monaco.ts                  Bundle Monaco nội bộ (không qua CDN), worker, typings cho "wasm:*"
   runtimes/
     types.ts                 Interface Runtime chung
@@ -109,12 +110,21 @@ Cross-Origin-Opener-Policy: same-origin
 Cross-Origin-Embedder-Policy: require-corp
 ```
 
-- **Netlify / Cloudflare Pages**: đã có sẵn `public/_headers`.
+- **Netlify / Cloudflare Pages**: đã có sẵn `public/_headers` và `public/_redirects`.
 - **Vercel**: đã có sẵn `vercel.json`.
-- **GitHub Pages** hoặc host không chỉnh được header: `index.html` tự đăng ký `coi-sw.js`, một service worker chèn header rồi reload trang một lần.
-- **Nginx**: `add_header Cross-Origin-Opener-Policy same-origin; add_header Cross-Origin-Embedder-Policy require-corp;`
+- **Wasmer Edge, GitHub Pages** hoặc host không chỉnh được header: không cần cấu hình gì. `index.html` tự đăng ký `coi-sw.js`, một service worker chèn header rồi reload trang một lần.
+- **Nginx**: gắn 2 header trên cho trang app, cộng với route connect ở dưới.
 
 Thanh trạng thái hiển thị `COOP/COEP ✓/✗`. QuickJS và Web Worker vẫn chạy được khi không có header; chỉ WebContainer bị vô hiệu.
+
+### Mở preview WebContainer ở tab mới
+
+Server (vd. Express) thật ra chạy trong tab app. Khi mở URL preview ở tab riêng, StackBlitz hiện nút **Connect to Project**. Nút này mở popup tới `<origin-của-app>/webcontainer/connect/<token>`, nơi [connect.html](connect.html) gọi `setupConnect()` để nối tab mới về WebContainer. Hai yêu cầu:
+
+1. Route `/webcontainer/connect/*` phải trả `connect.html`. `vite dev`/`vite preview` đã xử lý qua plugin trong [vite.config.ts](vite.config.ts), `coi-sw.js` tự phục vụ route này, còn Netlify/Cloudflare/Vercel dùng rewrite có sẵn.
+2. Route đó **không được** có header `Cross-Origin-Opener-Policy: same-origin`, vì header này xoá `window.opener` mà `setupConnect` cần. Vì vậy `_headers`/`vercel.json` chỉ gắn COOP cho trang app.
+
+Route connect phải nằm ở **gốc domain**, nên tính năng mở tab mới không chạy khi app deploy dưới sub-path (vd. `user.github.io/repo/`). Preview nhúng trong app thì vẫn chạy bình thường.
 
 Hệ quả của `require-corp`: tài nguyên cross-origin (ảnh, font, script) phải có CORS hoặc header `Cross-Origin-Resource-Policy`. Vì vậy app không tải font hay Monaco từ CDN mà bundle tất cả.
 

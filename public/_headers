@@ -1,4 +1,13 @@
-# Netlify / Cloudflare Pages: bật cross-origin isolation cho WebContainer
-/*
+# Netlify / Cloudflare Pages: bật cross-origin isolation cho WebContainer.
+# Chỉ gắn cho trang app + asset; KHÔNG gắn cho /webcontainer/connect/* (xem _redirects),
+# vì COOP same-origin sẽ cắt window.opener mà trang connect cần.
+/
   Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: require-corp
+
+/index.html
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: require-corp
+
+/assets/*
   Cross-Origin-Embedder-Policy: require-corp
